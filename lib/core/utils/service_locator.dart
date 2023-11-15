@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
 import '../services/api_services.dart';
+import 'app_strings.dart';
 
 GetIt getIt = GetIt.instance;
 
@@ -10,11 +11,10 @@ void setupServiceLocator() {
   // dio
   getIt.registerLazySingleton<Dio>(
     () => Dio(BaseOptions(
-      baseUrl: 'https://api.themoviedb.org/3',
+      baseUrl: AppStrings.apiBaseUrl,
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 10),
       headers: {
-        'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
     )),
