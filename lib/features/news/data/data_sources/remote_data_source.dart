@@ -11,7 +11,7 @@ abstract class RemoteDataSource {
 class RemoteDataSourceImpl implements RemoteDataSource {
   final ApiServices apiServices;
 
-  RemoteDataSourceImpl({required this.apiServices});
+  RemoteDataSourceImpl(this.apiServices);
 
   @override
   Future<List<ArticleModel>> getNews({

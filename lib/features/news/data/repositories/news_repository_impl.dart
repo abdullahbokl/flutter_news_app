@@ -7,7 +7,7 @@ import '../data_sources/remote_data_source.dart';
 class NewsRepoImpl extends NewsRepo {
   final RemoteDataSource remoteDataSource;
 
-  NewsRepoImpl({required this.remoteDataSource});
+  NewsRepoImpl(this.remoteDataSource);
 
   @override
   Future<Either<String, List<ArticleEntity>>> getNews({String? query}) async {

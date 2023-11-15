@@ -24,14 +24,9 @@ class MyApp extends StatelessWidget {
           body: Center(
         child: ElevatedButton(
           onPressed: () async {
-            final temp = RemoteDataSourceImpl(
-              apiServices: getIt(),
-            );
-            try {
-              await temp.getTopHeadlines(country: 'tesla');
-            } catch (e) {
-              debugPrint(e.toString());
-            }
+            final remoteDataSource = getIt<RemoteDataSource>();
+            final result = await remoteDataSource.getNews();
+            print(result);
           },
           child: Text(
             'fetch',
