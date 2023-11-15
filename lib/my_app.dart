@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'core/utils/service_locator.dart';
+import 'features/news/data/data_sources/remote_data_source.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -23,7 +24,14 @@ class MyApp extends StatelessWidget {
           body: Center(
         child: ElevatedButton(
           onPressed: () async {
-
+            final temp = RemoteDataSourceImpl(
+              apiServices: getIt(),
+            );
+            try {
+              await temp.getTopHeadlines(country: 'tesla');
+            } catch (e) {
+              debugPrint(e.toString());
+            }
           },
           child: Text(
             'fetch',
