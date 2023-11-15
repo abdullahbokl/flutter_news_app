@@ -2,12 +2,14 @@ import 'package:dartz/dartz.dart';
 
 import '../../domain/entities/article_entity.dart';
 import '../../domain/repositories/news_repository.dart';
+import '../data_sources/local_data_source.dart';
 import '../data_sources/remote_data_source.dart';
 
 class NewsRepoImpl extends NewsRepo {
   final RemoteDataSource remoteDataSource;
+  final LocalDataSource localDataSource;
 
-  NewsRepoImpl(this.remoteDataSource);
+  NewsRepoImpl(this.remoteDataSource, this.localDataSource);
 
   @override
   Future<Either<String, List<ArticleEntity>>> getNews({String? query}) async {
@@ -31,6 +33,28 @@ class NewsRepoImpl extends NewsRepo {
         return ArticleEntity.fromModel(articleModel);
       }).toList();
       return Right(articles);
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, Map<String, bool>>> changeFavoriteState({
+    String? id,
+  }) async {
+    try {
+      final result = await localDataSource.changeFavoriteState(id);
+      return Right(result);
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, Map<String, bool>>> getFavorites() async {
+    try {
+      final result = await localDataSource.getFavorites();
+      return Right(result);
     } catch (e) {
       return Left(e.toString());
     }

@@ -7,8 +7,8 @@ abstract class BaseUseCase<T, Parameters> {
   Future<Either<String, T>> call(Parameters parameters);
 }
 
-class NoParameters extends Equatable {
-  const NoParameters();
+class NoParams extends Equatable {
+  const NoParams();
 
   @override
   List<Object> get props => [];

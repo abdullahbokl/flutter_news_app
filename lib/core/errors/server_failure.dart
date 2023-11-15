@@ -1,10 +1,8 @@
 import 'package:dio/dio.dart';
 
-abstract class Failure {
-  final String message;
+import 'failure.dart';
 
-  Failure(this.message);
-}
+
 
 class ServerFailure extends Failure {
   ServerFailure(super.message);

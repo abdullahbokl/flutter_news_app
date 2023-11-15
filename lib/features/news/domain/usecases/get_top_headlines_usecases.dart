@@ -13,8 +13,11 @@ class GetTopHeadlinesUseCase
 
   @override
   Future<Either<String, List<ArticleEntity>>> call(
-      TopHeadlinesParams parameters) async {
-    return await newsRepo.getTopHeadlines(country: parameters.country);
+    TopHeadlinesParams parameters,
+  ) async {
+    return await newsRepo.getTopHeadlines(
+      country: parameters.country,
+    );
   }
 }
 

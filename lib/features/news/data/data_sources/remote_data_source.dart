@@ -1,4 +1,5 @@
 import '../../../../core/services/api_services.dart';
+import '../../../../core/utils/app_strings.dart';
 import '../models/article_model.dart';
 import '../models/news_model.dart';
 
@@ -19,7 +20,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }) async {
     try {
       final response = await apiServices.get(
-        endPoint: '/everything',
+        endPoint: AppStrings.apiEndPointEverything,
         queryParameters: {
           'q': query ?? 'everything',
         },
@@ -39,7 +40,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   }) async {
     try {
       final response = await apiServices.get(
-        endPoint: '/top-headlines',
+        endPoint: AppStrings.apiEndPointTopHeadlines,
         queryParameters: {
           'country': country ?? 'us',
         },
