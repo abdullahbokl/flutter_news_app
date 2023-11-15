@@ -6,23 +6,23 @@ import '../entities/article_entity.dart';
 import '../repositories/news_repository.dart';
 
 class GetTopHeadlinesUseCase
-    extends BaseUseCase<List<ArticleEntity>, TopHeadlinesParameters> {
+    extends BaseUseCase<List<ArticleEntity>, TopHeadlinesParams> {
   final NewsRepo newsRepo;
 
   GetTopHeadlinesUseCase(this.newsRepo);
 
   @override
   Future<Either<String, List<ArticleEntity>>> call(
-      TopHeadlinesParameters parameters) async {
+      TopHeadlinesParams parameters) async {
     return await newsRepo.getTopHeadlines(country: parameters.country);
   }
 }
 
-class TopHeadlinesParameters extends Equatable {
-  final String country;
+class TopHeadlinesParams extends Equatable {
+  final String? country;
 
-  const TopHeadlinesParameters({required this.country});
+  const TopHeadlinesParams({this.country});
 
   @override
-  List<Object> get props => [country];
+  List<Object?> get props => [country];
 }

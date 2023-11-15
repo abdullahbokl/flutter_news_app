@@ -6,23 +6,23 @@ import '../entities/article_entity.dart';
 import '../repositories/news_repository.dart';
 
 class GetEveryThingUseCase
-    extends BaseUseCase<List<ArticleEntity>, NewsParameters> {
+    extends BaseUseCase<List<ArticleEntity>, NewsParams> {
   final NewsRepo newsRepo;
 
   GetEveryThingUseCase(this.newsRepo);
 
   @override
   Future<Either<String, List<ArticleEntity>>> call(
-      NewsParameters parameters) async {
+      NewsParams parameters) async {
     return await newsRepo.getNews(query: parameters.query);
   }
 }
 
-class NewsParameters extends Equatable {
-  final String query;
+class NewsParams extends Equatable {
+  final String? query;
 
-  const NewsParameters({required this.query});
+  const NewsParams({this.query});
 
   @override
-  List<Object> get props => [query];
+  List<Object?> get props => [query];
 }
