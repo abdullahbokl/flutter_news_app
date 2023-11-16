@@ -6,14 +6,14 @@ abstract class NewsEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class GetNewsEvent extends NewsEvent {}
+class GetEveryThingEvent extends NewsEvent {}
 
 class GetTopHeadlinesEvent extends NewsEvent {}
+
+class GetFavoritesEvent extends NewsEvent {}
 
 class ChangeFavoriteStateEvent extends NewsEvent {
   final String id;
 
   ChangeFavoriteStateEvent(this.id);
 }
-
-class GetFavoritesEvent extends NewsEvent {}

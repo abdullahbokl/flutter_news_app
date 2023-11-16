@@ -33,14 +33,14 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     this.changeFavoriteStateUseCase,
     this.getFavoritesUseCase,
   ) : super(const NewsState()) {
-    on<GetNewsEvent>(_getNews);
+    on<GetEveryThingEvent>(_getNews);
     on<GetTopHeadlinesEvent>(_getTopHeadlines);
     on<ChangeFavoriteStateEvent>(_changeFavoriteState);
     on<GetFavoritesEvent>(_getFavorites);
   }
 
   Future<FutureOr<void>> _getNews(
-      GetNewsEvent event, Emitter<NewsState> emit) async {
+      GetEveryThingEvent event, Emitter<NewsState> emit) async {
     emit(state.copyWith(everythingRequestState: RequestState.loading));
     final String? query =
         searchController.text.isEmpty ? null : searchController.text;
