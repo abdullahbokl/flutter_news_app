@@ -7,9 +7,7 @@ class AppThemes {
 
   static final lightTheme = ThemeData(
     appBarTheme: AppBarTheme(
-      centerTitle: true,
       elevation: elevation,
-      // backgroundColor very lite blue
       backgroundColor: Colors.blueAccent.withOpacity(0.1),
       iconTheme: const IconThemeData(color: Colors.black),
       titleTextStyle: const TextStyle(
