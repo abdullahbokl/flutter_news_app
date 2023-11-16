@@ -7,7 +7,7 @@ class LocalDBServices {
 
   LocalDBServices(this.prefs);
 
-  Future<void> setMap(Map<String, dynamic> favorites, String key) async {
+  Future<void> setMap(String key, Map<String, dynamic> favorites) async {
     try {
       await prefs.setString(key, json.encode(favorites));
     } catch (e) {
@@ -24,6 +24,35 @@ class LocalDBServices {
       final Map<String, dynamic> favorites =
           Map<String, dynamic>.from(json.decode(favoritesJson));
       return favorites;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> set(String key, dynamic value) async {
+    try {
+      if (value is String) {
+        await prefs.setString(key, value);
+      } else if (value is int) {
+        await prefs.setInt(key, value);
+      } else if (value is double) {
+        await prefs.setDouble(key, value);
+      } else if (value is bool) {
+        await prefs.setBool(key, value);
+      } else if (value is List<String>) {
+        await prefs.setStringList(key, value);
+      } else {
+        throw Exception('Invalid value type');
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<dynamic> get(String key) async {
+    try {
+      final dynamic value = prefs.get(key);
+      return value;
     } catch (e) {
       rethrow;
     }

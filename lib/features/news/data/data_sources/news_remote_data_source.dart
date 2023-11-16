@@ -3,16 +3,16 @@ import '../../../../core/utils/app_strings.dart';
 import '../models/article_model.dart';
 import '../models/news_model.dart';
 
-abstract class RemoteDataSource {
+abstract class NewsRemoteDataSource {
   Future<List<ArticleModel>> getNews({String? query});
 
   Future<List<ArticleModel>> getTopHeadlines({String? country});
 }
 
-class RemoteDataSourceImpl implements RemoteDataSource {
+class NewsRemoteDataSourceImpl implements NewsRemoteDataSource {
   final ApiServices apiServices;
 
-  RemoteDataSourceImpl(this.apiServices);
+  NewsRemoteDataSourceImpl(this.apiServices);
 
   @override
   Future<List<ArticleModel>> getNews({

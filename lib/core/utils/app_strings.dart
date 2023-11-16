@@ -6,4 +6,5 @@ class AppStrings {
 
   /* Shared Preferences */
   static const String favoritesKey = 'favorites';
+  static const String themeModeKey = 'themeMode';
 }

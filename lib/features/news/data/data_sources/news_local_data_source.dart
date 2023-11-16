@@ -1,7 +1,7 @@
 import '../../../../core/services/local_db_services.dart';
 import '../../../../core/utils/app_strings.dart';
 
-abstract class LocalDataSource {
+abstract class NewsLocalDataSource {
   Future<Map<String, bool>> changeFavoriteState(String? id);
 
   Future<Map<String, bool>> getFavorites();
@@ -9,10 +9,10 @@ abstract class LocalDataSource {
   Future<void> clearFavorites();
 }
 
-class LocalDataSourceImpl extends LocalDataSource {
+class NewsLocalDataSourceImpl extends NewsLocalDataSource {
   final LocalDBServices localDBServices;
 
-  LocalDataSourceImpl(this.localDBServices);
+  NewsLocalDataSourceImpl(this.localDBServices);
 
   @override
   Future<Map<String, bool>> changeFavoriteState(String? id) async {
@@ -24,7 +24,7 @@ class LocalDataSourceImpl extends LocalDataSource {
       } else {
         favorites[id] = true;
       }
-      await localDBServices.setMap(favorites, AppStrings.favoritesKey);
+      await localDBServices.setMap(AppStrings.favoritesKey, favorites);
       return favorites;
     } catch (e) {
       rethrow;

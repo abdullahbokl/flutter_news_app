@@ -2,12 +2,12 @@ import 'package:dartz/dartz.dart';
 
 import '../../domain/entities/article_entity.dart';
 import '../../domain/repositories/news_repository.dart';
-import '../data_sources/local_data_source.dart';
-import '../data_sources/remote_data_source.dart';
+import '../data_sources/news_local_data_source.dart';
+import '../data_sources/news_remote_data_source.dart';
 
 class NewsRepoImpl extends NewsRepo {
-  final RemoteDataSource remoteDataSource;
-  final LocalDataSource localDataSource;
+  final NewsRemoteDataSource remoteDataSource;
+  final NewsLocalDataSource localDataSource;
 
   NewsRepoImpl(this.remoteDataSource, this.localDataSource);
 
