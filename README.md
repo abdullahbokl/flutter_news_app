@@ -1,16 +1,22 @@
-# new_app
+# 🔥 Flutter Boklo News App
 
-A new Flutter project.
+An App based on **NewsAPI** to browse the latest news from different sources and categories.
 
-## Getting Started
+## ✨ Features :
 
-This project is a starting point for a Flutter application.
+- Clean Architecture.
+- Bloc State Management.
+- NewsAPI.
+- Caching data/Offline.
+- Beautiful UI and Animation.
+- Saving favorite news.
+- Search for news.
+- Dark/Light Mode.
+- Responsive UI.
 
-A few resources to get you started if this is your first Flutter project:
+## 📸 Screenshots :
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+<img src="screenshots/image1.png" width="250"> <img src="screenshots/image2.png" width="250">
+<img src="screenshots/image3.png" width="250"> <img src="screenshots/image4.png" width="250">
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 📹 Video Demo : [Flutter Boklo News App](https://drive.google.com/file/d/1m7sjGgxri3HIfoK2ttVzOZEgWMcGtbF3/view?usp=sharing)
