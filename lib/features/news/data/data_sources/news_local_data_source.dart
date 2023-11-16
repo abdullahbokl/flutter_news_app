@@ -2,7 +2,7 @@ import '../../../../core/services/local_db_services.dart';
 import '../../../../core/utils/app_strings.dart';
 
 abstract class NewsLocalDataSource {
-  Future<Map<String, bool>> changeFavoriteState(String? id);
+  Future<Map<String, bool>> changeFavoriteState(String? url);
 
   Future<Map<String, bool>> getFavorites();
 
@@ -15,15 +15,17 @@ class NewsLocalDataSourceImpl extends NewsLocalDataSource {
   NewsLocalDataSourceImpl(this.localDBServices);
 
   @override
-  Future<Map<String, bool>> changeFavoriteState(String? id) async {
+  Future<Map<String, bool>> changeFavoriteState(String? url) async {
     try {
       final Map<String, bool> favorites = await getFavorites();
-      if (id == null) return favorites;
-      if (favorites.containsKey(id)) {
-        favorites[id] = !favorites[id]!;
+      if (url == null) return favorites;
+      if (favorites.containsKey(url)) {
+        favorites[url] = !favorites[url]!;
       } else {
-        favorites[id] = true;
+        favorites[url] = true;
       }
+      if (!favorites[url]!) favorites.remove(url);
+
       await localDBServices.setMap(AppStrings.favoritesKey, favorites);
       return favorites;
     } catch (e) {

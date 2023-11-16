@@ -12,7 +12,11 @@ class TopHeadlinesNews extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NewsBloc, NewsState>(
+    return BlocBuilder<NewsBloc, NewsLoadedState>(
+      buildWhen: (previous, current) =>
+          previous.topHeadlinesRequestState !=
+              current.topHeadlinesRequestState ||
+          previous.favoriteState != current.favoriteState,
       builder: (context, state) {
         if (state.topHeadlinesRequestState == RequestState.loading) {
           return const CustomLoadingIndicator();

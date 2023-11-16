@@ -12,7 +12,10 @@ class EverythingNews extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NewsBloc, NewsState>(
+    return BlocBuilder<NewsBloc, NewsLoadedState>(
+      buildWhen: (previous, current) =>
+          previous.everythingRequestState != current.everythingRequestState ||
+          previous.favoriteState != current.favoriteState,
       builder: (context, state) {
         if (state.everythingRequestState == RequestState.loading) {
           return const CustomLoadingIndicator();

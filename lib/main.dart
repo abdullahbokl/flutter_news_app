@@ -14,7 +14,7 @@ Future<void> main() async {
 
 Future<void> _appSetup() async {
   Bloc.observer = MyBlocObserver();
-  setupServiceLocator();
+  await setupServiceLocator();
   try {
     await dotenv.load(fileName: ".env");
   } catch (e) {

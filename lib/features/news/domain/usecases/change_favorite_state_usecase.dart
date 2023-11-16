@@ -14,17 +14,17 @@ class ChangeFavoriteStateUseCase
   Future<Either<String, Map<String, bool>>> call(
     ChangeFavoriteStateParams parameters,
   ) async {
-    return await newsRepo.changeFavoriteState(id: parameters.id);
+    return await newsRepo.changeFavoriteState(url: parameters.url);
   }
 }
 
 class ChangeFavoriteStateParams extends Equatable {
-  final String id;
+  final String url;
 
   const ChangeFavoriteStateParams({
-    required this.id,
+    required this.url,
   });
 
   @override
-  List<Object?> get props => [id];
+  List<Object?> get props => [url];
 }

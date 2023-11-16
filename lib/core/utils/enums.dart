@@ -3,3 +3,9 @@ enum RequestState {
   loaded,
   error,
 }
+
+enum FavoriteState {
+  loading,
+  loaded,
+  error,
+}

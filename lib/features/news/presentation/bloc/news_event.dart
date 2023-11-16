@@ -13,7 +13,7 @@ class GetTopHeadlinesEvent extends NewsEvent {}
 class GetFavoritesEvent extends NewsEvent {}
 
 class ChangeFavoriteStateEvent extends NewsEvent {
-  final String id;
+  final String url;
 
-  ChangeFavoriteStateEvent(this.id);
+  ChangeFavoriteStateEvent(this.url);
 }

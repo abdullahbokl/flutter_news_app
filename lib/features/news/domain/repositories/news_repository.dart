@@ -11,7 +11,7 @@ abstract class NewsRepo {
   });
 
   // local data source
-  Future<Either<String, Map<String, bool>>> changeFavoriteState({String? id});
+  Future<Either<String, Map<String, bool>>> changeFavoriteState({String? url});
 
   Future<Either<String, Map<String, bool>>> getFavorites();
 }

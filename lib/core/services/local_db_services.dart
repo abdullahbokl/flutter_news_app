@@ -17,6 +17,9 @@ class LocalDBServices {
 
   Future<Map<String, dynamic>> getMap(String key) async {
     try {
+      if (!prefs.containsKey(key)) {
+        return {};
+      }
       final String? favoritesJson = prefs.getString(key);
       if (favoritesJson == null) {
         return {};
@@ -51,6 +54,9 @@ class LocalDBServices {
 
   Future<dynamic> get(String key) async {
     try {
+      if (!prefs.containsKey(key)) {
+        return null;
+      }
       final dynamic value = prefs.get(key);
       return value;
     } catch (e) {

@@ -7,7 +7,6 @@ import '../../domain/usecases/change_theme_mode_usecase.dart';
 import '../../domain/usecases/get_theme_mode_usecase.dart';
 
 part 'theme_event.dart';
-
 part 'theme_state.dart';
 
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {

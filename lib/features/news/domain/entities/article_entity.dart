@@ -1,7 +1,6 @@
 import '../../data/models/article_model.dart';
 
 class ArticleEntity {
-  final String id;
   final String title;
   final String description;
   final String url;
@@ -12,7 +11,6 @@ class ArticleEntity {
   bool isFavorite = false;
 
   ArticleEntity({
-    required this.id,
     required this.title,
     required this.description,
     required this.url,
@@ -22,15 +20,14 @@ class ArticleEntity {
     this.isFavorite = false,
   });
 
-  factory ArticleEntity.fromModel(ArticleModel model) {
+  factory ArticleEntity.fromModel(ArticleModel article) {
     return ArticleEntity(
-      id: DateTime.now().microsecondsSinceEpoch.toString(),
-      title: model.title ?? '',
-      description: model.description ?? '',
-      url: model.url ?? '',
-      urlToImage: model.urlToImage ?? '',
-      publishedAt: model.publishedAt ?? '',
-      content: model.content ?? '',
+      title: article.title ?? '',
+      description: article.description ?? '',
+      url: article.url ?? '',
+      urlToImage: article.urlToImage ?? '',
+      publishedAt: article.publishedAt ?? '',
+      content: article.content ?? '',
       isFavorite: false,
     );
   }

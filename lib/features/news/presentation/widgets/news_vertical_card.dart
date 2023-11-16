@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:new_app/core/shared/widgets/custom_text.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/shared/widgets/custom_text.dart';
 import '../../domain/entities/article_entity.dart';
+import '../bloc/news_bloc.dart';
 
 class NewsVerticalCard extends StatelessWidget {
   final ArticleEntity article;
@@ -51,7 +53,9 @@ class NewsVerticalCard extends StatelessWidget {
                   article.isFavorite ? Icons.favorite : Icons.favorite_border,
                   color: article.isFavorite ? Colors.red : Colors.grey,
                 ),
-                onPressed: () {},
+                onPressed: () => context
+                    .read<NewsBloc>()
+                    .add(ChangeFavoriteStateEvent(article.url)),
               ),
             ],
           ),

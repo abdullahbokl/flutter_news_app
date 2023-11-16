@@ -1,7 +1,7 @@
 part of 'news_bloc.dart';
 
 @immutable
-class NewsState extends Equatable {
+class NewsLoadedState extends Equatable {
   // NewsState
   final List<ArticleEntity> everythingArticles;
   final RequestState everythingRequestState;
@@ -12,25 +12,29 @@ class NewsState extends Equatable {
   final RequestState topHeadlinesRequestState;
   final String topHeadlinesErrorMessage;
 
+  // favorites
+  final FavoriteState favoriteState;
 
-  const NewsState({
+  const NewsLoadedState({
     this.everythingArticles = const [],
     this.everythingRequestState = RequestState.loading,
     this.everythingErrorMessage = '',
     this.topHeadlinesArticles = const [],
     this.topHeadlinesRequestState = RequestState.loading,
     this.topHeadlinesErrorMessage = '',
+    this.favoriteState = FavoriteState.loading,
   });
 
-  NewsState copyWith({
+  NewsLoadedState copyWith({
     List<ArticleEntity>? everythingArticles,
     RequestState? everythingRequestState,
     String? everythingErrorMessage,
     List<ArticleEntity>? topHeadlinesArticles,
     RequestState? topHeadlinesRequestState,
     String? topHeadlinesErrorMessage,
+    FavoriteState? favoriteState,
   }) {
-    return NewsState(
+    return NewsLoadedState(
       everythingArticles: everythingArticles ?? this.everythingArticles,
       everythingRequestState:
           everythingRequestState ?? this.everythingRequestState,
@@ -41,6 +45,7 @@ class NewsState extends Equatable {
           topHeadlinesRequestState ?? this.topHeadlinesRequestState,
       topHeadlinesErrorMessage:
           topHeadlinesErrorMessage ?? this.topHeadlinesErrorMessage,
+      favoriteState: favoriteState ?? this.favoriteState,
     );
   }
 
@@ -52,5 +57,6 @@ class NewsState extends Equatable {
         topHeadlinesArticles,
         topHeadlinesRequestState,
         topHeadlinesErrorMessage,
+        favoriteState,
       ];
 }

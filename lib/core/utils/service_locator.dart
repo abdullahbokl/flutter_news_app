@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:new_app/core/shared/features/theme/presentation/theme_bloc/theme_bloc.dart';
 import 'package:new_app/core/shared/features/theme/data/data_sources/theme_local_data_source.dart';
 import 'package:new_app/core/shared/features/theme/data/repositories/theme_repositories_impl.dart';
 import 'package:new_app/core/shared/features/theme/domain/repositories/theme_repositories.dart';
 import 'package:new_app/core/shared/features/theme/domain/usecases/change_theme_mode_usecase.dart';
 import 'package:new_app/core/shared/features/theme/domain/usecases/get_theme_mode_usecase.dart';
+import 'package:new_app/core/shared/features/theme/presentation/theme_bloc/theme_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../features/news/data/data_sources/news_local_data_source.dart';

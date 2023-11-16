@@ -40,10 +40,10 @@ class NewsRepoImpl extends NewsRepo {
 
   @override
   Future<Either<String, Map<String, bool>>> changeFavoriteState({
-    String? id,
+    String? url,
   }) async {
     try {
-      final result = await localDataSource.changeFavoriteState(id);
+      final result = await localDataSource.changeFavoriteState(url);
       return Right(result);
     } catch (e) {
       return Left(e.toString());

@@ -12,10 +12,9 @@ import '../../domain/usecases/get_favorites_usecases.dart';
 import '../../domain/usecases/get_top_headlines_usecases.dart';
 
 part 'news_event.dart';
-
 part 'news_state.dart';
 
-class NewsBloc extends Bloc<NewsEvent, NewsState> {
+class NewsBloc extends Bloc<NewsEvent, NewsLoadedState> {
   final GetEveryThingUseCase getEveryThingUseCase;
   final GetTopHeadlinesUseCase getTopHeadlinesUseCase;
 
@@ -32,7 +31,7 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
     this.getTopHeadlinesUseCase,
     this.changeFavoriteStateUseCase,
     this.getFavoritesUseCase,
-  ) : super(const NewsState()) {
+  ) : super(const NewsLoadedState()) {
     on<GetEveryThingEvent>(_getNews);
     on<GetTopHeadlinesEvent>(_getTopHeadlines);
     on<ChangeFavoriteStateEvent>(_changeFavoriteState);
@@ -40,103 +39,119 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
   }
 
   Future<FutureOr<void>> _getNews(
-      GetEveryThingEvent event, Emitter<NewsState> emit) async {
+    GetEveryThingEvent event,
+    Emitter<NewsLoadedState> emit,
+  ) async {
     emit(state.copyWith(everythingRequestState: RequestState.loading));
     final String? query =
         searchController.text.isEmpty ? null : searchController.text;
 
     final result = await getEveryThingUseCase(NewsParams(query: query));
 
-    result.fold(
-      (l) => emit(state.copyWith(
-        everythingRequestState: RequestState.error,
-        everythingErrorMessage: l.toString(),
-      )),
-      (r) => emit(state.copyWith(
-        everythingRequestState: RequestState.loaded,
-        everythingArticles: r,
-      )),
-    );
-  }
+    List<ArticleEntity> newArticles = [];
 
-  Future<FutureOr<void>> _getTopHeadlines(
-      GetTopHeadlinesEvent event, Emitter<NewsState> emit) async {
-    emit(state.copyWith(topHeadlinesRequestState: RequestState.loading));
-    final result =
-        await getTopHeadlinesUseCase(TopHeadlinesParams(country: _country));
+    if (state.favoriteState == FavoriteState.loading) {
+      await Future.delayed(const Duration(milliseconds: 500));
+    }
 
     result.fold(
-      (l) => emit(state.copyWith(
-        topHeadlinesRequestState: RequestState.error,
-        topHeadlinesErrorMessage: l.toString(),
-      )),
-      (r) => emit(state.copyWith(
-        topHeadlinesRequestState: RequestState.loaded,
-        topHeadlinesArticles: r,
-      )),
-    );
-  }
-
-  Future<FutureOr<void>> _changeFavoriteState(
-      ChangeFavoriteStateEvent event, Emitter<NewsState> emit) async {
-    final String id = event.id;
-    final bool isFavorite = _favorites[id] ?? false;
-    _favorites[id] = !isFavorite;
-
-    final everyThingArticles =
-        await Future.value(state.everythingArticles.map((e) {
-      if (e.id == id) e.isFavorite = !isFavorite;
-      return e;
-    }).toList());
-    final topHeadlinesArticles =
-        await Future.value(state.topHeadlinesArticles.map((e) {
-      if (e.id == id) e.isFavorite = !isFavorite;
-      return e;
-    }).toList());
-
-    emit(state.copyWith(
-      everythingArticles: everyThingArticles,
-      topHeadlinesArticles: topHeadlinesArticles,
-    ));
-
-    await changeFavoriteStateUseCase(ChangeFavoriteStateParams(id: id));
-  }
-
-  Future<FutureOr<void>> _getFavorites(
-      GetFavoritesEvent event, Emitter<NewsState> emit) async {
-    final result = await getFavoritesUseCase();
-
-    result.fold(
-      (l) => emit(state.copyWith(
-        everythingRequestState: RequestState.error,
-        everythingErrorMessage: l.toString(),
-      )),
-      (r) async {
-        _favorites = r;
-
-        final everythingArticles = await Future.value(
-          _handleIsFavorite(state.everythingArticles),
-        );
-        final topHeadlinesArticles = await Future.value(
-          _handleIsFavorite(state.topHeadlinesArticles),
-        );
+      (l) {
         emit(state.copyWith(
-          everythingArticles: everythingArticles,
-          topHeadlinesArticles: topHeadlinesArticles,
+          everythingRequestState: RequestState.error,
+          everythingErrorMessage: l.toString(),
+        ));
+      },
+      (r) {
+        newArticles = _handleArticles(r);
+        emit(state.copyWith(
+          everythingRequestState: RequestState.loaded,
+          everythingArticles: newArticles,
         ));
       },
     );
   }
 
-  List<ArticleEntity> _handleIsFavorite(List<ArticleEntity> articles) {
-    for (ArticleEntity article in articles) {
-      if (_favorites.containsKey(article.id)) {
-        article.isFavorite = _favorites[article.id]!;
-      } else {
-        article.isFavorite = false;
-      }
+  Future<FutureOr<void>> _getTopHeadlines(
+    GetTopHeadlinesEvent event,
+    Emitter<NewsLoadedState> emit,
+  ) async {
+    emit(state.copyWith(topHeadlinesRequestState: RequestState.loading));
+    final result =
+        await getTopHeadlinesUseCase(TopHeadlinesParams(country: _country));
+
+    List<ArticleEntity> newArticles = [];
+
+    if (state.favoriteState == FavoriteState.loading) {
+      await Future.delayed(const Duration(milliseconds: 500));
     }
-    return articles;
+
+    result.fold((l) {
+      emit(state.copyWith(
+        topHeadlinesRequestState: RequestState.error,
+        topHeadlinesErrorMessage: l.toString(),
+      ));
+    }, (r) async {
+      newArticles = _handleArticles(r);
+      emit(state.copyWith(
+        topHeadlinesRequestState: RequestState.loaded,
+        topHeadlinesArticles: newArticles,
+      ));
+    });
+  }
+
+  Future<FutureOr<void>> _changeFavoriteState(
+      ChangeFavoriteStateEvent event, Emitter<NewsLoadedState> emit) async {
+    emit(state.copyWith(favoriteState: FavoriteState.loading));
+
+    final String url = event.url;
+    final bool isFavorite = !(_favorites[url] ?? false);
+    _favorites[url] = isFavorite;
+
+    final everyThingArticles = _handleArticles(state.everythingArticles);
+    final topHeadlinesArticles = _handleArticles(state.topHeadlinesArticles);
+
+    emit(state.copyWith(
+      everythingArticles: everyThingArticles,
+      topHeadlinesArticles: topHeadlinesArticles,
+      favoriteState: FavoriteState.loaded,
+    ));
+
+    final result = await changeFavoriteStateUseCase(
+      ChangeFavoriteStateParams(url: url),
+    );
+  }
+
+  Future<FutureOr<void>> _getFavorites(
+    GetFavoritesEvent event,
+    Emitter<NewsLoadedState> emit,
+  ) async {
+    emit(state.copyWith(favoriteState: FavoriteState.loading));
+
+    final result = await getFavoritesUseCase();
+
+    result.fold(
+      (l) {
+        emit(state.copyWith(
+          favoriteState: FavoriteState.error,
+          everythingErrorMessage: l.toString(),
+        ));
+      },
+      (r) {
+        _favorites = r;
+        emit(state.copyWith(favoriteState: FavoriteState.loaded));
+      },
+    );
+  }
+
+  List<ArticleEntity> _handleArticles(List<ArticleEntity> articles) {
+    final List<ArticleEntity> newArticles = [];
+    for (int i = 0; i < articles.length; i++) {
+      final article = articles[i];
+      final bool isFavorite = _favorites[article.url] ?? false;
+      article.isFavorite = isFavorite;
+      newArticles.add(article);
+    }
+    return newArticles;
   }
 
   @override
