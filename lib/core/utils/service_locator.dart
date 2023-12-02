@@ -1,11 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:new_app/core/shared/features/theme/data/data_sources/theme_local_data_source.dart';
-import 'package:new_app/core/shared/features/theme/data/repositories/theme_repositories_impl.dart';
-import 'package:new_app/core/shared/features/theme/domain/repositories/theme_repositories.dart';
-import 'package:new_app/core/shared/features/theme/domain/usecases/change_theme_mode_usecase.dart';
-import 'package:new_app/core/shared/features/theme/domain/usecases/get_theme_mode_usecase.dart';
-import 'package:new_app/core/shared/features/theme/presentation/theme_bloc/theme_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../features/news/data/data_sources/news_local_data_source.dart';
@@ -19,7 +13,12 @@ import '../../features/news/domain/usecases/get_top_headlines_usecases.dart';
 import '../../features/news/presentation/bloc/news_bloc.dart';
 import '../services/api_services.dart';
 import '../services/local_db_services.dart';
-import 'app_strings.dart';
+import '../shared/features/theme/data/data_sources/theme_local_data_source.dart';
+import '../shared/features/theme/data/repositories/theme_repositories_impl.dart';
+import '../shared/features/theme/domain/repositories/theme_repositories.dart';
+import '../shared/features/theme/domain/usecases/change_theme_mode_usecase.dart';
+import '../shared/features/theme/domain/usecases/get_theme_mode_usecase.dart';
+import '../shared/features/theme/presentation/theme_bloc/theme_bloc.dart';
 
 GetIt getIt = GetIt.instance;
 
@@ -28,14 +27,7 @@ Future<void> setupServiceLocator() async {
 
   /* API */
   getIt.registerLazySingleton<Dio>(
-    () => Dio(BaseOptions(
-      baseUrl: AppStrings.apiBaseUrl,
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    )),
+    () => ApiServices.setupDio(),
   );
 
   getIt.registerLazySingleton<ApiServices>(
